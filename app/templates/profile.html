@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ user.name }}'s Profile</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+  </head>
+  <body>
+    <div class="form-container">
+      <h2>Welcome, {{ user.name }}</h2>
+
+      <p>Email: {{ user.email }}</p>
+
+      <h3>Bio</h3>
+      <form method="post" action="/profile/{{ user.id }}/bio">
+        <textarea
+          id="bioField"
+          name="bio"
+          placeholder="Write your bio..."
+        ></textarea>
+        <p>{{ user.bio }}</p>
+        <br />
+        <button type="submit">Update Bio</button>
+      </form>
+
+      <a href="/logout"><button class="logout-btn">Logout</button></a>
+
+      <h3>Your Cart</h3>
+
+      {% if cart_items %}
+      <ul>
+        {% for item in cart_items %}
+        <li>
+          {{ item.product.name }} – ₹{{ item.product.price }}
+          <form
+            method="post"
+            action="/remove_from_cart/{{ user.id }}/{{ item.product.id }}"
+            style="display: inline"
+          >
+            <button type="submit">Remove</button>
+          </form>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>Your cart is empty.</p>
+      {% endif %}
+
+      <h3>All Products</h3>
+      <ul>
+        {% for product in products %}
+        <li>
+          {{ product.name }} - ₹{{ product.price }}
+          <form
+            method="post"
+            action="/add_to_cart/{{ user.id }}/{{ product.id }}"
+            style="display: inline"
+          >
+            <button type="submit">Add to Cart</button>
+          </form>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </body>
+</html>
