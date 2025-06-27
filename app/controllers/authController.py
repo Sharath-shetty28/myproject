@@ -56,7 +56,10 @@ def signin(
         return HTMLResponse("<h3>Invalid credentials</h3>", status_code=401)
 
     # Redirect to profile using user ID (no session/JWT used)
-    return RedirectResponse(url=f"/profile/{user.id}", status_code=303)
+    if user.is_admin:
+        return RedirectResponse(url="/admin/dashboard", status_code=302)
+    else:
+        return RedirectResponse(url=f"/profile/{user.id}", status_code=302)
 
 
 

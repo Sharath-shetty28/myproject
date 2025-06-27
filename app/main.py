@@ -8,6 +8,7 @@ from .models import schema
 from app.controllers.authController import seed_products
 import os
 from app.controllers import cart_controller
+from app.controllers import adminController
 
 
 # Create tables
@@ -22,4 +23,5 @@ app.include_router(authController.router)
 seed_products()
 app.include_router(cart_controller.router)
 
+app.include_router(adminController.router, prefix="/admin")
 

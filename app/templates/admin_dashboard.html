@@ -1,0 +1,25 @@
+<!-- app/templates/admin_dashboard.html -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Admin Dashboard</title>
+  </head>
+  <body>
+    <h1>All Users</h1>
+    <table border="1">
+      <tr>
+        <th>User ID</th>
+        <th>Name</th>
+        <th>Email</th>
+      </tr>
+      {% for user in users %}
+      <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>

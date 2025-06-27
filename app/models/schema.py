@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String,Boolean
 from app.database import Base
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
@@ -10,6 +10,7 @@ class User(Base):
     email = Column(String, unique=True, index=True, nullable=False)
     password = Column(String, nullable=False)
     bio = Column(String, default="")
+    is_admin = Column(Boolean, default=False)
 
 class Product(Base):
     __tablename__ = "products"
