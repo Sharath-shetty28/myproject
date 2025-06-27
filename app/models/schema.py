@@ -18,6 +18,7 @@ class Product(Base):
     name = Column(String, nullable=False)
     price = Column(Integer, nullable=False)
     description = Column(String)
+    image_filename = Column(String, nullable=True)
 
     
 class Cart(Base):

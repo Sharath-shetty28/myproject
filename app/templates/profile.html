@@ -49,7 +49,14 @@
       <ul>
                 {% for product in products %}        
         <li>
-                    {{ product.name }} - ₹{{ product.price }}          
+          {% if product.image_filename %}
+          <img
+            src="/static/uploads/products/{{ product.image_filename }}"
+            width="150"
+            height="150"
+          />
+          {% endif %}           {{ product.name }} - ₹{{ product.price }}      
+             
           <form
             method="post"
             action="/add_to_cart/{{ user.id }}/{{ product.id }}"
