@@ -48,7 +48,7 @@ async def add_product(request: Request, db: Session = Depends(get_db)):
 
     db.add(new_product)
     db.commit()
-    return RedirectResponse(url="/dashboard", status_code=302)
+    return RedirectResponse(url="/admin/dashboard", status_code=302)
 
 @router.get("/products/edit/{product_id}")
 def edit_product_form(product_id: int, request: Request, db: Session = Depends(get_db)):
@@ -66,4 +66,12 @@ async def update_product(product_id: int, request: Request, db: Session = Depend
     product.price = price
 
     db.commit()
+    return RedirectResponse(url="/admin/products", status_code=302)
+
+@router.post("/products/delete/{product_id}")
+def delete_product(product_id: int, db: Session = Depends(get_db)):
+    product = db.query(Product).get(product_id)
+    if product:
+        db.delete(product)
+        db.commit()
     return RedirectResponse(url="/admin/products", status_code=302)
