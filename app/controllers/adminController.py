@@ -6,7 +6,7 @@ from fastapi import UploadFile, File
 from fastapi import APIRouter, Request, Depends
 from sqlalchemy.orm import Session
 from app.database import SessionLocal
-from app.models.schema import User ,Product
+from app.models.schema import User ,Product ,Cart
 from fastapi.responses import  RedirectResponse
 from fastapi.templating import Jinja2Templates
 
@@ -90,6 +90,7 @@ async def update_product(product_id: int, request: Request, db: Session = Depend
 
 @router.post("/products/delete/{product_id}")
 def delete_product(product_id: int, db: Session = Depends(get_db)):
+    db.query(Cart).filter(Cart.product_id == product_id).delete()
     product = db.query(Product).get(product_id)
     if product:
         db.delete(product)
