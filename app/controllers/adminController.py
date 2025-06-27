@@ -25,6 +25,15 @@ def admin_dashboard(request: Request, db: Session = Depends(get_db)):
         "users": users
     })
 
+# adminController.py
+
+@router.get("/products")
+def admin_view_products(request: Request, db: Session = Depends(get_db)):
+    products = db.query(Product).all()
+    users = db.query(User).all()
+    return templates.TemplateResponse("admin_products.html", {"request": request, "products": products})
+
+
 @router.get("/products/add")
 def show_add_product_form(request: Request):
     return templates.TemplateResponse("admin_add_product.html", {"request": request})
@@ -35,8 +44,26 @@ async def add_product(request: Request, db: Session = Depends(get_db)):
     form = await request.form()
     name = form.get("name")
     price = float(form.get("price"))
-
     new_product = Product(name=name, price=price)
+
     db.add(new_product)
     db.commit()
-    return RedirectResponse(url="/", status_code=302)
+    return RedirectResponse(url="/dashboard", status_code=302)
+
+@router.get("/products/edit/{product_id}")
+def edit_product_form(product_id: int, request: Request, db: Session = Depends(get_db)):
+    product = db.query(Product).get(product_id)
+    return templates.TemplateResponse("admin_edit_product.html", {"request": request, "product": product})
+
+@router.post("/products/edit/{product_id}")
+async def update_product(product_id: int, request: Request, db: Session = Depends(get_db)):
+    form = await request.form()
+    name = form.get("name")
+    price = float(form.get("price"))
+
+    product = db.query(Product).get(product_id)
+    product.name = name
+    product.price = price
+
+    db.commit()
+    return RedirectResponse(url="/admin/products", status_code=302)
